@@ -1,32 +1,11 @@
 import axios from "axios"
 import { API_CONFIG } from "./config"
-import { CurrentWeatherResponse, type Coord } from "./types"
+import { type CurrentWeatherResponse, type Coord, type GeocodingResponse } from "./types"
 
 /** 
 Encapsulate the fetch logic inside a class for more modularity and reusability
 */
 class WeatherAPI {
-  /**
-    private variable for the apiKey and the params for the fetch
-    And to make the access restrict outside the class 
-  */
-  private apiKey: string;
-  /**
-    This utility type constructs an object type whose property keys are Keys 
-    and whose property values are Type. This utility 
-    can be used to map the properties of a type to another type.
-
-    Example: Record<CatName, CatInfo>;
-  */
-  private defaultParams: Record<string, string>;
-
-  /** The constructor initializes these properties using 
-      values from the API_CONFIG */
-  constructor() {
-    this.apiKey = API_CONFIG.API_KEY;
-    this.defaultParams = API_CONFIG.DEFAULT_PARAMS;
-  }
-
   /** private method for creating the api url with its params */
   private createUrl(endpoint: string, params: Record<string, string>) : string {
     /** URLSearchParams utility is used to handle query parameters safely 
@@ -46,26 +25,44 @@ class WeatherAPI {
    * specified by the caller. This makes it flexible and reusable for different
    * API endpoints
    */
-  private async fetchData<T>(baseUrl: string, endpoint: string, params:Record<string, string> = {}): Promise<T> {
-    const url = this.createUrl(baseUrl, endpoint, params);
-    /** Asynchronous operations with the Promises<> and error handling with the
-     * try and catch
-    */
-    try {
-      const response = await axios.get<T>(url);
-      return response.data;
-    } catch (error) {
-      console.error('Error fetching data: ', error);
-      throw error;
+  private async fetchData<T>(url:string): Promise<T> {
+    const response = await fetch(url)
+
+    if (!response.ok) {
+      throw new Error(`Weather API Error: ${response.statusText}`)
     }
+
+    return response.json()
   }
 
-  async getCurrentWeather({ lat, lon }: Coord) Promise<CurrentWeatherResponse> {
-    /** By specifying CurrentWeatherResponse as the return type, it ensures that 
-     * the data returned matches the expected, providing type safety and 
-     * improvind code relianility*/
-    return this.fetchData<CurrentWeatherResponse>(API_CONFIG.BASE_URL,'weather', { q: cityName });
+  async getCurrentWeather({ lat, lon }: Coord): Promise<CurrentWeatherResponse> {
+    const url = this.createUrl(`${API_CONFIG.BASE_URL}/weather`, {
+      lat: lat.toString(),
+      lon: lon.toString(),
+      units: "metric",
+    })
+    return this.fetchData<CurrentWeatherResponse>(url)
+  }
+
+  async reverseGeocode({
+    lat,
+    lon,
+  }: Coord): Promise<GeocodingResponse[]> {
+    const url = this.createUrl(`${API_CONFIG.GEO}/reverse`, {
+      lat: lat.toString(),
+      lon: lon.toString(),
+      limit: "1"
+    })
+    return this.fetchData<GeocodingResponse[]>(url)
+  }
+
+  async searchLocations(query: string): Promise<GeocodingResponse[]> {
+    const url = this.createUrl(`${API_CONFIG.GEO}/direct`, {
+      q: query,
+      limit: "5",
+    })
+    return this.fetchData<GeocodingResponse[]>(url)
   }
 }
 
-export const weatherClient = new WeatherAPI();
+export const weatherAPI = new WeatherAPI();

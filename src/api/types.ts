@@ -10,40 +10,34 @@ export interface Weather {
   icon: string;
 }
 
-export interface Main {
-  temp: number;
-  feels_like: number;
-  temp_min: number;
-  temp_max: number;
-  pressure: number;
-  humidity: number;
-}
-
-export interface Wind {
-  speed: number;
-  deg: number;
-}
-
-export interface Sys {
-  type: number;
-  id: number;
-  country: string;
-  sunrise: number;
-  sunset: number;
-}
-
 export interface CurrentWeatherResponse {
   coord: Coord;
   weather: Weather[];
   base: string;
-  main: Main;
+  main: {
+    temp: number;
+    feels_like: number;
+    temp_min: number;
+    temp_max: number;
+    pressure: number;
+    humidity: number;
+  }
   visibility: number;
-  wind: Wind;
+  wind: {
+    speed: number;
+    deg: number;
+  }
   clouds: {
     all: number;
   }
   dt: number;
-  sys: Sys;
+  sys: {
+    type: number;
+    id: number;
+    country: string;
+    sunrise: number;
+    sunset: number;
+  }
   timezone: number;
   id: number;
   name: string;
