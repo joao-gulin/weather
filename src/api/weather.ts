@@ -1,6 +1,6 @@
 import axios from "axios"
 import { API_CONFIG } from "./config"
-import { CurrentWeatherResponse } from "./types"
+import { CurrentWeatherResponse, type Coord } from "./types"
 
 /** 
 Encapsulate the fetch logic inside a class for more modularity and reusability
@@ -28,18 +28,18 @@ class WeatherAPI {
   }
 
   /** private method for creating the api url with its params */
-  private createUrl(baseUrl: string ,endpoint: string, params: Record<string, string>) : string {
+  private createUrl(endpoint: string, params: Record<string, string>) : string {
     /** URLSearchParams utility is used to handle query parameters safely 
     and efficcientyly ensuring they are properly enconded */
     const queryParams = new URLSearchParams({
       /** By spreding this.defaultParams, we ensure that default parameters like
        * the API key and units are includ in every request, reducing redundancy
        */
-      ...this.defaultParams,
+      appid: API_CONFIG.API_KEY,
       ...params,
     })
     /** returns the custom url to be used for any api url for fetching */
-    return `${baseUrl}/${endpoint}?${queryParams.toString()}`
+    return `${endpoint}?${queryParams.toString()}`
   }
 
   /** This method is generic (<T>), allowing it to fetch data of any type
@@ -60,7 +60,7 @@ class WeatherAPI {
     }
   }
 
-  async getCurrentWeather(cityName: string): Promise<CurrentWeatherResponse> {
+  async getCurrentWeather({ lat, lon }: Coord) Promise<CurrentWeatherResponse> {
     /** By specifying CurrentWeatherResponse as the return type, it ensures that 
      * the data returned matches the expected, providing type safety and 
      * improvind code relianility*/

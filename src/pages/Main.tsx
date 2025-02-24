@@ -1,3 +1,4 @@
+import CurrentCard from "@/components/CurrentCard";
 import LoadingSkeleton from "@/components/LoadingSkeleton";
 import useWeather from "@/hooks/useWeather"
 import { useState } from "react"
@@ -42,7 +43,7 @@ export default function Main() {
   }
 
   return (
-    <div>
+    <div className="relative">
       <form onSubmit={handleSubmit}>
         <input
           type="text"
@@ -50,15 +51,16 @@ export default function Main() {
           placeholder="Write a city name"
         />
       </form>
-      <br />
-      <h1>{data.name}</h1>
-      <br />
-      <img src={`https://rodrigokamada.github.io/openweathermap/images/${data.weather[0].icon}_w@2x.png`} />
-      <br />
-      <h1>Current Temperature: {Math.floor(Math.round(data.main.temp))}</h1>
-      <h1>Feels Like: {Math.floor(Math.round(data.main.feels_like))}</h1>
-      <h1>Max: {Math.floor(Math.round(data.main.temp_max))}</h1>
-      <h1>Min: {Math.floor(Math.round(data.main.temp_min))}</h1>
+      <CurrentCard 
+        name={data.name}
+        icon={data.weather[0].icon}
+        description={data.weather[0].description}
+        temp={data.main.temp}
+        temp_max={data.main.temp_max}
+        temp_min={data.main.temp_min}
+        feels_like={data.main.feels_like}
+        className='absolute left-4 top-4'
+      />
     </div>
   )
 }
