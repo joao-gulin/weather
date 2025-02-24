@@ -2,28 +2,28 @@ import { useState, useEffect } from "react";
 import type { Coord } from "@/api/types";
 
 interface GeolocationState {
-  coordinates: Coord | null
-  error: string | null
-  isLoading: boolean
+  coordinates: Coord | null;
+  error: string | null;
+  isLoading: boolean;
 }
 
 export function useGeolocation() {
   const [locationData, setLocationData] = useState<GeolocationState>({
     coordinates: null,
     error: null,
-    isLoading:true,
-  })
+    isLoading: true,
+  });
 
   const getLocation = () => {
-    setLocationData((prev) =>  ({ ...prev, isLoading: true, error: null}))
+    setLocationData((prev) => ({ ...prev, isLoading: true, error: null }));
 
     if (!navigator.geolocation) {
       setLocationData({
         coordinates: null,
         error: "Geolocation is not supported by your browser",
         isLoading: false,
-      })
-      return
+      });
+      return;
     }
 
     navigator.geolocation.getCurrentPosition(
@@ -35,46 +35,46 @@ export function useGeolocation() {
           },
           error: null,
           isLoading: false,
-        })
+        });
       },
       (error) => {
         let errorMessage: string;
 
         switch (error.code) {
           case error.PERMISSION_DENIED:
-            errorMessage = 
-              "Location permission denied. Please enable location access"
-            break
+            errorMessage =
+              "Location permission denied. Please enable location access.";
+            break;
           case error.POSITION_UNAVAILABLE:
-            errorMessage = "Location information is unavaible."
-            break
+            errorMessage = "Location information is unavailable.";
+            break;
           case error.TIMEOUT:
-            errorMessage = "Location request timed out."
-            break
+            errorMessage = "Location request timed out.";
+            break;
           default:
-            errorMessage = "An unknown error occurred."
+            errorMessage = "An unknown error occurred.";
         }
 
         setLocationData({
           coordinates: null,
           error: errorMessage,
           isLoading: false,
-        })
+        });
       },
       {
-        enableHighAccuracy: true,
-        timeout: 5000,
+        enableHighAccuracy: false,
         maximumAge: 0,
       }
-    )
-  }
+    );
+  };
 
+  // Get location on component mount
   useEffect(() => {
     getLocation();
-  }, [])
+  }, []);
 
   return {
     ...locationData,
-    getLocation,
-  }
+    getLocation, // Expose method to manually refresh location
+  };
 }
