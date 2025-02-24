@@ -1,6 +1,6 @@
 import axios from "axios"
 import { API_CONFIG } from "./config"
-import { CurrentWeatherResponse, type Coord } from "./types"
+import { CurrentWeatherResponse, type Coord, type GeocodingResponse } from "./types"
 
 /** 
 Encapsulate the fetch logic inside a class for more modularity and reusability
@@ -46,13 +46,9 @@ class WeatherAPI {
    * specified by the caller. This makes it flexible and reusable for different
    * API endpoints
    */
-  private async fetchData<T>(baseUrl: string, endpoint: string, params:Record<string, string> = {}): Promise<T> {
-    const url = this.createUrl(baseUrl, endpoint, params);
-    /** Asynchronous operations with the Promises<> and error handling with the
-     * try and catch
-    */
+  private async fetchData<T>(url:string): Promise<T> {
     try {
-      const response = await axios.get<T>(url);
+      const response = await axios.get(url);
       return response.data;
     } catch (error) {
       console.error('Error fetching data: ', error);
@@ -60,12 +56,26 @@ class WeatherAPI {
     }
   }
 
-  async getCurrentWeather({ lat, lon }: Coord) Promise<CurrentWeatherResponse> {
-    /** By specifying CurrentWeatherResponse as the return type, it ensures that 
-     * the data returned matches the expected, providing type safety and 
-     * improvind code relianility*/
-    return this.fetchData<CurrentWeatherResponse>(API_CONFIG.BASE_URL,'weather', { q: cityName });
+  async getCurrentWeather({ lat, lon }: Coord): Promise<CurrentWeatherResponse> {
+    const url = this.createUrl(`${API_CONFIG.BASE_URL}/weather`, {
+      lat: lat.toString(),
+      lon: lon.toString(),
+      units: "metric",
+    })
+    return this.fetchData<CurrentWeatherResponse>(url)
+  }
+
+  async reverseGeocode({
+    lat,
+    lon,
+  }: Coord): Promise<GeocodingResponse[]> {
+    const url = this.createUrl(`${API_CONFIG.GEO}/reverse`, {
+      lat: lat.toString(),
+      lon: lon.toString(),
+      limit: "1"
+    })
+    return this.fetchData<GeocodingResponse[]>(url)
   }
 }
 
-export const weatherClient = new WeatherAPI();
+export const weatherAPI = new WeatherAPI();

@@ -1,6 +1,10 @@
 import CurrentCard from "@/components/CurrentCard";
 import LoadingSkeleton from "@/components/LoadingSkeleton";
-import useWeather from "@/hooks/useWeather"
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import { useGeolocation } from "@/hooks/useGeolocation";
+import { useReverseGeocodeQuery, useWeatherQuery } from "@/hooks/useWeather"
+import { AlertTriangle, MapPin } from "lucide-react";
 import { useState } from "react"
 
 const debounce = (func: (...args: any[]) => void, delay: number) => {
@@ -14,8 +18,23 @@ const debounce = (func: (...args: any[]) => void, delay: number) => {
 };
 
 export default function Main() {
-  const [cityName, setCityName] = useState('london')
-  const { data, isLoading, isError } = useWeather(cityName)
+  const {
+    coordinates,
+    error: locationError,
+    isLoading: locationLoading,
+    getLocation,
+  } = useGeolocation();
+
+  const weatherQuery = useWeatherQuery(coordinates)
+  const locationQuery = useReverseGeocodeQuery(coordinates)
+
+  const handleRefresh = () => {
+    getLocation();
+    if (coordinates) {
+      weatherQuery.refetch();
+      locationQuery.refetch()
+    }
+  }
 
   const handleInputChange = debounce((value: string) => {
     setCityName(value);
@@ -28,18 +47,42 @@ export default function Main() {
     setCityName(input.value);
   };
 
-  if (isLoading) {
+  if (locationLoading) {
     return <div>
       <LoadingSkeleton />
     </div>
   }
 
-  if (isError) {
-    return <div>Error fetching weather data</div>;
+  if (locationError) {
+    return (
+      <Alert variant="destructive">
+        <AlertTriangle className="h-4 w-4"/>
+        <AlertTitle>Lcoation Error</AlertTitle>
+        <AlertDescription className="flex flex-col gap-4">
+          <p>{locationError}</p>
+        </AlertDescription>
+        <Button variant="outline" onClick={getLocation} className="w-fit">
+          <MapPin className="mr-2 h-4 w-4" />
+          Enable Location
+        </Button>
+      </Alert>
+    )
   }
 
-  if (!data) {
-    return <div>Error on the data</div>
+  if (!coordinates) {
+    return (
+      <Alert>
+        <MapPin className="h-4 w-4" />
+        <AlertTitle>Location Required</AlertTitle>
+        <AlertDescription className="flex flex-col gap-4">
+          <p>Please enable location access to see your local weather.</p>
+          <Button variant="outline" onClick={getLocation} className="w-fit">
+            <MapPin className="mr-2 h-4 w-4" />
+            Enable Location
+          </Button>
+        </AlertDescription>
+      </Alert>
+    )
   }
 
   return (
@@ -52,13 +95,7 @@ export default function Main() {
         />
       </form>
       <CurrentCard 
-        name={data.name}
-        icon={data.weather[0].icon}
-        description={data.weather[0].description}
-        temp={data.main.temp}
-        temp_max={data.main.temp_max}
-        temp_min={data.main.temp_min}
-        feels_like={data.main.feels_like}
+        {...weatherQuery.data}
         className='absolute left-4 top-4'
       />
     </div>
