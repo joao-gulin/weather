@@ -1,6 +1,8 @@
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query"
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 import Main from "./pages/Main"
+import { ThemeProvider } from "./context/theme-provider";
+import { Layout } from "./components/Layout";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -15,8 +17,12 @@ const queryClient = new QueryClient({
 export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <Main />
-      <ReactQueryDevtools initialIsOpen={false} />
+      <ThemeProvider defaultTheme="dark">
+        <Layout>
+          <Main />
+          <ReactQueryDevtools initialIsOpen={false} />
+        </Layout>
+      </ThemeProvider>
     </QueryClientProvider>
   )
 }

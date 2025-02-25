@@ -1,3 +1,4 @@
+import CurrentWeather from "@/components/CurrentCard";
 import CurrentCard from "@/components/CurrentCard";
 import LoadingSkeleton from "@/components/LoadingSkeleton";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -88,9 +89,25 @@ export default function Main() {
 
   return (
     <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <h1 className="text-xl font-bold tracking-tight">My Location</h1>
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={handleRefresh}
+          disabled={weatherQuery.isFetching}
+        >
+          <RefreshCw 
+            className={`h-4 w-4 ${
+              weatherQuery.isFetching ? "animate-spin" : ""
+            }`}
+          />
+        </Button>
+      </div>
+
       <div className="grid gap-6">
         <div className="flex flex-col lg:flex-row gap-4">
-          <CurrentCard 
+          <CurrentWeather 
             data={weatherQuery.data}
             locationName={locationName}
           />
