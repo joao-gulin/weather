@@ -116,7 +116,7 @@ export function CitySearch() {
                       <span>{item.name}</span>
                       {item.state && (
                         <span className="text-sm text-muted-foreground">
-                          , {item.state}
+                        , {item.state}
                         </span>
                       )}
                       <span className="text-sm text-muted-foreground">
