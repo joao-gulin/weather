@@ -62,7 +62,7 @@ export function useGeolocation() {
         });
       },
       {
-        enableHighAccuracy: true,
+        enableHighAccuracy: false,
         maximumAge: 0,
       }
     );
