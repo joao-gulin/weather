@@ -1,3 +1,4 @@
+import { CitySearch } from "./CitySearch";
 import { ThemeToggle } from "./ThemeToggle";
 import { useTheme } from "@/context/theme-provider";
 
@@ -15,7 +16,8 @@ export function Header() {
           />
         </div>
 
-        <div className="flex">
+        <div className="flex gap-4">
+          <CitySearch/>
           <ThemeToggle />
         </div>
       </div>

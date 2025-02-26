@@ -1,6 +1,6 @@
 import { useSearchHistory } from "@/hooks/useSearchHistory";
 import { useLocationSearch } from "@/hooks/useWeather";
-import { Search, XCircle } from "lucide-react";
+import { Clock, Loader2, Search, XCircle } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom"
 import { Button } from "./ui/button";
@@ -13,7 +13,9 @@ import {
   CommandItem, 
   CommandSeparator,
   CommandDialog
- } from "./ui/command";
+} from "./ui/command";
+
+import { format } from "date-fns";
 
 export function CitySearch() {
   const [open, setOpen] = useState(false)
