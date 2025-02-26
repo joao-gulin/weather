@@ -7,6 +7,7 @@ import CurrentWeather from "@/components/CurrentCard";
 import { FavoriteButton } from "@/components/FavoriteButton";
 import { WeatherDetails } from "@/components/WeatherDetails";
 import { WeatherForecast } from "@/components/WeatherForecast";
+import { HourlyTemperature } from "@/components/HourlyTemperature";
 
 export function CityPage() {
   const [searchParams] = useSearchParams()
@@ -49,6 +50,7 @@ export function CityPage() {
 
       <div className="grid gap-6">
         <CurrentWeather data={weatherQuery.data} />
+        <HourlyTemperature data={forecastQuery.data} />
         <div className="grid gap-6 md:grid-cols-2 items-start">
           <WeatherDetails data={weatherQuery.data} />
           <WeatherForecast data={forecastQuery.data} />

@@ -1,5 +1,6 @@
 import CurrentWeather from "@/components/CurrentCard";
 import { FavoriteCities } from "@/components/FavoriteCities";
+import { HourlyTemperature } from "@/components/HourlyTemperature";
 import LoadingSkeleton from "@/components/LoadingSkeleton";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
@@ -115,6 +116,7 @@ export default function Main() {
             data={weatherQuery.data}
             locationName={locationName}
           />
+          <HourlyTemperature data={forecastQuery.data} />
         </div>
 
         <div className="grid gap-6 md:grid-cols-2 items-start">
