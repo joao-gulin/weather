@@ -24,7 +24,7 @@ export default function App() {
           <Layout>
             <Routes>
               <Route path="/" element={<Main/>} />
-              <Route path="/city" element={<CityPage/>} />
+              <Route path="/city/:cityName" element={<CityPage/>} />
             </Routes>
           </Layout>
         </ThemeProvider>
