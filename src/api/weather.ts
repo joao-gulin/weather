@@ -1,7 +1,5 @@
-import axios from "axios"
 import { API_CONFIG } from "./config"
 import type { CurrentWeatherResponse, Coord, GeocodingResponse, ForecastData } from "./types"
-import { useSearchParams } from "react-router-dom"
 
 /** 
 Encapsulate the fetch logic inside a class for more modularity and reusability
