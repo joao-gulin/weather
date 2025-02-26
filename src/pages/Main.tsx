@@ -1,5 +1,4 @@
 import CurrentWeather from "@/components/CurrentCard";
-import CurrentCard from "@/components/CurrentCard";
 import LoadingSkeleton from "@/components/LoadingSkeleton";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
