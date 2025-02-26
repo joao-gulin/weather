@@ -1,6 +1,7 @@
 import axios from "axios"
 import { API_CONFIG } from "./config"
-import { type CurrentWeatherResponse, type Coord, type GeocodingResponse } from "./types"
+import type { CurrentWeatherResponse, Coord, GeocodingResponse, ForecastData } from "./types"
+import { useSearchParams } from "react-router-dom"
 
 /** 
 Encapsulate the fetch logic inside a class for more modularity and reusability
@@ -54,6 +55,17 @@ class WeatherAPI {
       limit: "1"
     })
     return this.fetchData<GeocodingResponse[]>(url)
+  }
+
+  async getForecast({ 
+    lat, 
+    lon }: Coord): Promise<ForecastData> {
+    const url = this.createUrl(`${API_CONFIG.BASE_URL}/forecast`, {
+      lat: lat.toString(),
+      lon: lon.toString(),
+      units: "metric"
+    })
+    return this.fetchData<ForecastData>(url)
   }
 
   async searchLocations(query: string): Promise<GeocodingResponse[]> {

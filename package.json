@@ -26,6 +26,8 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.2.0",
+    "rechart": "^0.0.1",
+    "recharts": "^2.15.1",
     "shadcn": "^2.3.0",
     "sonner": "^2.0.1",
     "tailwind-merge": "^3.0.1",
