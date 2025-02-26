@@ -4,6 +4,7 @@ import Main from "./pages/Main"
 import { ThemeProvider } from "./context/theme-provider";
 import { Layout } from "./components/Layout";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { CityPage } from "./pages/CityPage";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -23,6 +24,7 @@ export default function App() {
           <Layout>
             <Routes>
               <Route path="/" element={<Main/>} />
+              <Route path="/city" element={<CityPage/>} />
             </Routes>
           </Layout>
         </ThemeProvider>
