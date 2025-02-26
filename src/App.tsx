@@ -5,7 +5,7 @@ import { ThemeProvider } from "./context/theme-provider";
 import { Layout } from "./components/Layout";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { CityPage } from "./pages/CityPage";
-import { SpeedInsihts } from "@vercel/speed-insights"
+import { SpeedInsights } from "@vercel/speed-insights/react"
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -30,7 +30,7 @@ export default function App() {
           </Layout>
         </ThemeProvider>
       </BrowserRouter>
-      <SpeedInsihts />
+      <SpeedInsights />
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   )
