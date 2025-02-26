@@ -1,7 +1,9 @@
 import CurrentWeather from "@/components/CurrentCard";
+import { FavoriteCities } from "@/components/FavoriteCities";
 import LoadingSkeleton from "@/components/LoadingSkeleton";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
+import { WeatherDetails } from "@/components/WeatherDetails";
 import { useGeolocation } from "@/hooks/useGeolocation";
 import { useReverseGeocodeQuery, useWeatherQuery } from "@/hooks/useWeather"
 import { AlertTriangle, MapPin, RefreshCw } from "lucide-react";
@@ -88,6 +90,7 @@ export default function Main() {
 
   return (
     <div className="space-y-4">
+      <FavoriteCities />
       <div className="flex items-center justify-between">
         <h1 className="text-xl font-bold tracking-tight">My Location</h1>
         <Button
@@ -110,6 +113,10 @@ export default function Main() {
             data={weatherQuery.data}
             locationName={locationName}
           />
+        </div>
+
+        <div className="grid gap-6 md:grid-cols-2 items-start">
+          <WeatherDetails data={weatherQuery.data} />
         </div>
       </div>
     </div>

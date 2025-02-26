@@ -5,6 +5,7 @@ import { AlertTriangle } from "lucide-react";
 import LoadingSkeleton from "@/components/LoadingSkeleton";
 import CurrentWeather from "@/components/CurrentCard";
 import { FavoriteButton } from "@/components/FavoriteButton";
+import { WeatherDetails } from "@/components/WeatherDetails";
 
 export function CityPage() {
   const [searchParams] = useSearchParams()
@@ -47,6 +48,7 @@ export function CityPage() {
       <div className="grid gap-6">
         <CurrentWeather data={weatherQuery.data} />
         <div className="grid gap-6 md:grid-cols-2 items-start">
+          <WeatherDetails data={weatherQuery.data}/>
         </div>
       </div>
     </div>
