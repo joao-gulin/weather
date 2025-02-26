@@ -4,6 +4,7 @@ import { useParams, useSearchParams } from "react-router-dom";
 import { AlertTriangle } from "lucide-react";
 import LoadingSkeleton from "@/components/LoadingSkeleton";
 import CurrentWeather from "@/components/CurrentCard";
+import { FavoriteButton } from "@/components/FavoriteButton";
 
 export function CityPage() {
   const [searchParams] = useSearchParams()
@@ -37,15 +38,15 @@ export function CityPage() {
           {params.cityName}, {weatherQuery.data.sys.country}
         </h1>
         <div className="flex gap-2">
-
+          <FavoriteButton 
+            data={{ ...weatherQuery.data, name: params.cityName }}
+          />
         </div>
       </div>
 
       <div className="grid gap-6">
         <CurrentWeather data={weatherQuery.data} />
-
         <div className="grid gap-6 md:grid-cols-2 items-start">
-          
         </div>
       </div>
     </div>
