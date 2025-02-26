@@ -77,7 +77,7 @@ export default function Main() {
             className="w-fit"
           >
             <MapPin className="mr-2 h-4 w-4" />
-            Use Porto
+            Use Mock Location For Testing
           </Button>
         </div>
       </Alert>
