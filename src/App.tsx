@@ -6,6 +6,7 @@ import { Layout } from "./components/Layout";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { CityPage } from "./pages/CityPage";
 import { SpeedInsights } from "@vercel/speed-insights/react"
+import { Toaster } from "sonner";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -28,6 +29,7 @@ export default function App() {
               <Route path="/city/:cityName" element={<CityPage/>} />
             </Routes>
           </Layout>
+          <Toaster richColors />
         </ThemeProvider>
       </BrowserRouter>
       <SpeedInsights />
